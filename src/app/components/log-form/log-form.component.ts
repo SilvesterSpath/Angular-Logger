@@ -20,7 +20,7 @@ export class LogFormComponent implements OnInit {
   constructor(private logService: LogService) {
     this.id = '';
     this.text = '';
-    this.date = null;    
+    this.date = '';    
    }
 
   ngOnInit(): void {
@@ -64,6 +64,7 @@ export class LogFormComponent implements OnInit {
       this.id = '';
       this.text = '';
       this.date = '';
+      this.logService.clearState()
     }
   
   generateId() {

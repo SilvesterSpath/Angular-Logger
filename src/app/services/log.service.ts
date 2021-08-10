@@ -23,11 +23,18 @@ export class LogService {
   constructor() {
     this.logs = [{id: '1', text: 'Generated components', date: new Date('07/26/2021 12:54:23')},
     {id: '2', text: 'Added Bootstrap', date: new Date('07/27/2021 9:33:14')},
-    {id: '3', text: 'Added logs component', date: new Date('07/28/2021 13:43:51')}]
+    {id: '3', text: 'Added logs component', date: new Date('07/28/2021 13:43:51')}]    
   }
 
   getLogs(): Observable<Log[]> {
-    return of(this.logs);
+    if (localStorage.getItem('logs') === null) {
+      this.logs = []
+    } else {
+      const storedLogs = localStorage.getItem('logs');    
+      this.logs = JSON.parse(storedLogs || '')
+    }
+    
+    return of(this.logs.sort((a, b)=>{return b.date - a.date}));
   }
 
   setFormLog(log: Log) {
@@ -36,6 +43,9 @@ export class LogService {
 
   addLog(log: Log) {
     this.logs.unshift(log)
+
+    // Add to local storage
+    localStorage.setItem('logs', JSON.stringify(this.logs))
   }
 
   updateLog(log: Log) {
