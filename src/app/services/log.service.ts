@@ -9,12 +9,16 @@ import {Log} from '../models/log'
 @Injectable({
   providedIn: 'root'
 })
+  
 export class LogService {
   logs: Log[];
 
   private logSource = new BehaviorSubject<Log>({ id: '', text: '', date: '' })
   
   selectedLog = this.logSource.asObservable();
+
+  private stateSource = new BehaviorSubject<boolean>(true);
+  stateClear = this.stateSource.asObservable()
 
   constructor() {
     this.logs = [{id: '1', text: 'Generated components', date: new Date('07/26/2021 12:54:23')},
@@ -50,5 +54,9 @@ export class LogService {
       } 
     })
     
+  }
+
+  clearState() {
+    this.stateSource.next(true)
   }
 }
